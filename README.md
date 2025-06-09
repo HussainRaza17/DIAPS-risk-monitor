@@ -1,6 +1,3 @@
-# Create a README.md file with the provided content
-
-readme_content = """\
 # 🌐 DIAPS - Disaster Information Aggregation and Prediction Software
 
 **DIAPS** is a real-time disaster risk monitoring and visualization platform. It aggregates weather, elevation, and seismic data to calculate and present risk levels for natural disasters such as **floods**, **heavy rain**, **landslides**, and **tsunamis**. With an interactive map and detailed location analysis, DIAPS empowers communities, responders, and researchers with timely insights to stay prepared.
