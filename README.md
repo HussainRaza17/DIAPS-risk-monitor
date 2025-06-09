@@ -64,13 +64,13 @@ cd diaps
 |------------------|-----------------------------|------------|-------------------------------------------|
 | WeatherAPI       | https://www.weatherapi.com/ | ✅         | Get free key & upgrade for more requests  |
 
-```
 
 ### 3. **Run locally**
 Open index.html directly in a browser or use a local server:
 ```
 # With Python 3
 python -m http.server
+
 ```
 ---
 
