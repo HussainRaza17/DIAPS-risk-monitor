@@ -4,56 +4,105 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Location Details - DIAPS</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="detailStyle.css">
 </head>
 <body>
+    <!-- Animated background -->
+    <div class="particles" id="particles"></div>
+
     <header>
         <h1>DIAPS</h1>
         <p>Disaster Information Aggregation and Prediction Software</p>
     </header>
     
     <main>
-        <div class="container details-container">
-            <div class="location-info">
-                <h2 id="location-title">Loading location data...</h2>
-                <p id="coordinates">Coordinates: ...</p>
-                <p id="elevation">Elevation: Loading...</p>
-                <a href="index.html" class="back-btn">Back to Map</a>
-            </div>
-            
-            <div class="data-sections">
-                <section class="weather-section">
-                    <h3>Weather Forecast</h3>
-                    <div id="weather-loading" class="loading">Loading weather data...</div>
-                    <div id="weather-data" class="hidden">
-                        <div class="weather-days" id="weather-days"></div>
-                    </div>
-                </section>
-                
-                <section class="disaster-section">
-                    <h3>Disaster Risk Prediction</h3>
-                    <div id="disaster-loading" class="loading">Calculating risk levels...</div>
-                    <div id="disaster-data" class="hidden">
-                        <div class="disaster-risks">
-                            <p id="flood-risk" class="tooltip" data-tooltip="Based on precipitation forecast and terrain">Flood Risk: Calculating...</p>
-                            <p id="rain-risk" class="tooltip" data-tooltip="Based on precipitation forecast">Heavy Rain Risk: Calculating...</p>
-                            <p id="landslide-risk" class="tooltip" data-tooltip="Based on elevation, precipitation, and terrain">Landslide Risk: Calculating...</p>
-                            <p id="tsunami-risk" class="tooltip" data-tooltip="Based on proximity to coastline and elevation">Tsunami Risk: Calculating...</p>
+        <div class="container">
+            <div class="details-container">
+                <!-- Location Info Header -->
+                <div class="glass-card fade-in">
+                    <div class="location-info">
+                        <h2 id="location-title">🌍 Loading location data...</h2>
+                        <p id="coordinates">📍 Coordinates: ...</p>
+                        <p id="elevation">⛰️ Elevation: Loading...</p>
+                        <div style="margin-top: 20px;">
+                            <span class="status-dot status-online"></span>
+                            <span>Real-time data monitoring active</span>
                         </div>
-                        <div class="chart-container">
-                            <canvas id="risk-chart"></canvas>
-                        </div>
+                        <a href="index.html" class="back-btn">← Back to Map</a>
                     </div>
-                </section>
+                </div>
                 
-                <section class="earthquake-section">
-                    <h3>Recent Earthquakes</h3>
-                    <div id="earthquake-loading" class="loading">Fetching earthquake data...</div>
-                    <div id="earthquake-data" class="hidden">
-                        <div id="earthquake-list"></div>
-                    </div>
-                </section>
+                <div class="data-sections">
+                    <!-- Weather Section -->
+                    <section class="data-section glass-card fade-in">
+                        <h3>
+                            <div class="section-icon weather-icon">🌦️</div>
+                            Weather Forecast
+                        </h3>
+                        <div id="weather-loading" class="loading">Loading weather data...</div>
+                        <div id="weather-data" class="hidden">
+                            <div class="weather-days" id="weather-days"></div>
+                        </div>
+                    </section>
+                    
+                    <!-- Disaster Risk Section -->
+                    <section class="data-section glass-card fade-in">
+                        <h3>
+                            <div class="section-icon disaster-icon">⚠️</div>
+                            Disaster Risk Assessment
+                        </h3>
+                        <div id="disaster-loading" class="loading">Calculating risk levels...</div>
+                        <div id="disaster-data" class="hidden">
+                            <div class="disaster-risks">
+                                <div id="flood-risk" class="risk-item tooltip" data-tooltip="Based on precipitation forecast and terrain">
+                                    <div>💧 Flood Risk</div>
+                                    <div style="margin-top: 10px;">Calculating...</div>
+                                    <div class="risk-progress">
+                                        <div class="risk-progress-fill"></div>
+                                    </div>
+                                </div>
+                                <div id="rain-risk" class="risk-item tooltip" data-tooltip="Based on precipitation forecast">
+                                    <div>🌧️ Heavy Rain Risk</div>
+                                    <div style="margin-top: 10px;">Calculating...</div>
+                                    <div class="risk-progress">
+                                        <div class="risk-progress-fill"></div>
+                                    </div>
+                                </div>
+                                <div id="landslide-risk" class="risk-item tooltip" data-tooltip="Based on elevation, precipitation, and terrain">
+                                    <div>🏔️ Landslide Risk</div>
+                                    <div style="margin-top: 10px;">Calculating...</div>
+                                    <div class="risk-progress">
+                                        <div class="risk-progress-fill"></div>
+                                    </div>
+                                </div>
+                                <div id="tsunami-risk" class="risk-item tooltip" data-tooltip="Based on proximity to coastline and elevation">
+                                    <div>🌊 Tsunami Risk</div>
+                                    <div style="margin-top: 10px;">Calculating...</div>
+                                    <div class="risk-progress">
+                                        <div class="risk-progress-fill"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="risk-chart"></canvas>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Earthquake Section -->
+                    <section class="data-section glass-card fade-in">
+                        <h3>
+                            <div class="section-icon earthquake-icon">🌍</div>
+                            Recent Earthquakes
+                        </h3>
+                        <div id="earthquake-loading" class="loading">Fetching earthquake data...</div>
+                        <div id="earthquake-data" class="hidden">
+                            <div id="earthquake-list"></div>
+                        </div>
+                    </section>
+                </div>
             </div>
         </div>
     </main>

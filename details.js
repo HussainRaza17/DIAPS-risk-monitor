@@ -1,12 +1,30 @@
+// Create animated background particles
+function createParticles() {
+    const particlesContainer = document.getElementById('particles');
+    const particleCount = 50;
+    
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.top = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 6 + 's';
+        particle.style.animationDuration = (6 + Math.random() * 4) + 's';
+        particlesContainer.appendChild(particle);
+    }
+}
+
+createParticles();
+
 document.addEventListener('DOMContentLoaded', function() {
     // Get URL parameters
     const urlParams = new URLSearchParams(window.location.search);
-    const lat = urlParams.get('lat');
-    const lng = urlParams.get('lng');
+    const lat = urlParams.get('lat') || '28.6139'; // Default to Delhi
+    const lng = urlParams.get('lng') || '77.2090';
     
     // Update location info
-    document.getElementById('location-title').textContent = 'Location Details';
-    document.getElementById('coordinates').textContent = `Coordinates: ${lat}, ${lng}`;
+    document.getElementById('location-title').innerHTML = '🌍 Location Details';
+    document.getElementById('coordinates').innerHTML = `📍 Coordinates: ${lat}, ${lng}`;
     
     // Fetch all data
     fetchWeatherData(lat, lng);
@@ -42,24 +60,25 @@ function displayWeatherData(data) {
     weatherContainer.innerHTML = '';
     
     // Update location title
-    document.getElementById('location-title').textContent = `${data.location.name}, ${data.location.country}`;
+    document.getElementById('location-title').innerHTML = `🌍 ${data.location.name}, ${data.location.country}`;
     
     // Display forecast for 3 days
-    data.forecast.forecastday.forEach(day => {
+    data.forecast.forecastday.forEach((day, index) => {
         const date = new Date(day.date);
         const dayName = date.toLocaleDateString('en-US', { weekday: 'short' });
         
         const dayElement = document.createElement('div');
         dayElement.className = 'weather-day';
+        dayElement.style.animationDelay = `${index * 0.2}s`;
         dayElement.innerHTML = `
             <h4>${dayName}, ${date.toLocaleDateString()}</h4>
             <img src="${day.day.condition.icon}" alt="${day.day.condition.text}">
             <p class="weather-condition">${day.day.condition.text}</p>
-            <p>Temp: ${day.day.avgtemp_c}°C (${day.day.avgtemp_f}°F)</p>
-            <p>Max: ${day.day.maxtemp_c}°C | Min: ${day.day.mintemp_c}°C</p>
-            <p>Humidity: ${day.day.avghumidity}%</p>
-            <p>Wind: ${day.day.maxwind_kph} km/h</p>
-            <p>Rain: ${day.day.totalprecip_mm} mm</p>
+            <p><strong>Temp:</strong> ${day.day.avgtemp_c}°C (${day.day.avgtemp_f}°F)</p>
+            <p><strong>High/Low:</strong> ${day.day.maxtemp_c}°C / ${day.day.mintemp_c}°C</p>
+            <p><strong>Humidity:</strong> ${day.day.avghumidity}%</p>
+            <p><strong>Wind:</strong> ${day.day.maxwind_kph} km/h</p>
+            <p><strong>Precipitation:</strong> ${day.day.totalprecip_mm} mm</p>
         `;
         weatherContainer.appendChild(dayElement);
     });
@@ -77,13 +96,13 @@ async function fetchElevationData(lat, lng) {
         
         if (response.ok && data.results && data.results.length > 0) {
             const elevation = data.results[0].elevation;
-            document.getElementById('elevation').textContent = `Elevation: ${elevation} meters`;
+            document.getElementById('elevation').innerHTML = `⛰️ Elevation: ${elevation} meters`;
         } else {
             throw new Error('Failed to get elevation data');
         }
     } catch (error) {
         console.error('Error fetching elevation data:', error);
-        document.getElementById('elevation').textContent = 'Elevation: Data unavailable';
+        document.getElementById('elevation').innerHTML = '⛰️ Elevation: Data unavailable';
         document.getElementById('elevation').classList.add('error-text');
     }
 }
@@ -120,7 +139,7 @@ function displayEarthquakeData(data) {
         data.features.sort((a, b) => b.properties.time - a.properties.time);
         
         // Create list of earthquakes
-        data.features.forEach(quake => {
+        data.features.forEach((quake, index) => {
             const magnitude = quake.properties.mag;
             const location = quake.properties.place;
             const time = new Date(quake.properties.time).toLocaleString();
@@ -128,6 +147,7 @@ function displayEarthquakeData(data) {
             
             const quakeElement = document.createElement('div');
             quakeElement.className = 'earthquake-item';
+            quakeElement.style.animationDelay = `${index * 0.1}s`;
             
             // Determine severity class based on magnitude
             let severityClass = '';
@@ -139,24 +159,28 @@ function displayEarthquakeData(data) {
                 severityClass = 'minor';
             }
             
-            quakeElement.innerHTML = `
-                <h4 class="${severityClass}">Magnitude ${magnitude}</h4>
-                <p>Location: ${location}</p>
-                <p>Time: ${time}</p>
-                <p>Depth: ${depth} km</p>
-                <div class="quake-details-btn">Details</div>
-            `;
-            earthquakeList.appendChild(quakeElement);
+            quakeElement.classList.add(severityClass);
             
-            // Add click event for details button
-            const detailsBtn = quakeElement.querySelector('.quake-details-btn');
-            detailsBtn.addEventListener('click', function() {
-                alert(`Earthquake Details\n\nMagnitude: ${magnitude}\nLocation: ${location}\nTime: ${time}\nDepth: ${depth} km\nFelt Reports: ${quake.properties.felt || 'None'}\nSignificance: ${quake.properties.sig}`);
-            });
+            quakeElement.innerHTML = `
+                <h4>🌍 Magnitude ${magnitude}</h4>
+                <p><strong>📍 Location:</strong> ${location}</p>
+                <p><strong>⏰ Time:</strong> ${time}</p>
+                <p><strong>🏔️ Depth:</strong> ${depth} km</p>
+                <button class="quake-details-btn" onclick="showQuakeDetails('${quake.properties.url}')">
+                    View Details
+                </button>
+            `;
+            
+            earthquakeList.appendChild(quakeElement);
         });
     } else {
         // No earthquakes found
-        earthquakeList.innerHTML = '<div class="no-data-message"><p>No recent earthquakes found within <strong>100 km</strong>.</p><p>This is good news! 🎉</p></div>';
+        earthquakeList.innerHTML = `
+            <div class="no-data-message">
+                <p><strong>Good news!</strong> No significant earthquakes detected in the past 30 days within 100km radius.</p>
+                <p>🌿</p>
+            </div>
+        `;
     }
     
     // Hide loading, show data
@@ -164,199 +188,271 @@ function displayEarthquakeData(data) {
     document.getElementById('earthquake-data').classList.remove('hidden');
 }
 
-// Calculate disaster risks
-function calculateDisasterRisks(lat, lng) {
-    // This is a simplified risk calculation based on weather data
-    // In a real app, you'd use more sophisticated models and additional data sources
+// Show earthquake details
+function showQuakeDetails(url) {
+    if (url) {
+        window.open(url, '_blank');
+    }
+}
+
+// Calculate disaster risks based on various factors
+async function calculateDisasterRisks(lat, lng) {
+    try {
+        // Simulate risk calculation based on location and weather data
+        const risks = await computeRiskLevels(lat, lng);
+        displayDisasterRisks(risks);
+    } catch (error) {
+        console.error('Error calculating disaster risks:', error);
+        document.getElementById('disaster-loading').textContent = 'Failed to calculate disaster risks.';
+        document.getElementById('disaster-loading').classList.add('error-message');
+    }
+}
+
+// Compute risk levels based on location and weather patterns
+async function computeRiskLevels(lat, lng) {
+    // Simulate risk calculation - in real implementation, this would use ML models
+    const elevation = await getElevationForRisk(lat, lng);
+    const weatherRisk = await getWeatherRiskFactors(lat, lng);
+    const geographicRisk = getGeographicRiskFactors(lat, lng);
     
-    // Simulating a delay for calculation
-    setTimeout(() => {
-        // These risk values would normally be calculated based on actual data
-        // For demo purposes, we're generating semi-random values
+    return {
+        flood: calculateFloodRisk(elevation, weatherRisk, geographicRisk),
+        rain: calculateRainRisk(weatherRisk),
+        landslide: calculateLandslideRisk(elevation, weatherRisk, geographicRisk),
+        tsunami: calculateTsunamiRisk(lat, lng, elevation)
+    };
+}
+
+// Helper functions for risk calculation
+async function getElevationForRisk(lat, lng) {
+    try {
+        const response = await fetch(`https://api.open-elevation.com/api/v1/lookup?locations=${lat},${lng}`);
+        const data = await response.json();
+        return data.results && data.results.length > 0 ? data.results[0].elevation : 100;
+    } catch (error) {
+        return 100; // Default elevation
+    }
+}
+
+async function getWeatherRiskFactors(lat, lng) {
+    try {
+        const response = await fetch(`https://api.weatherapi.com/v1/forecast.json?key=${WEATHER_API_KEY}&q=${lat},${lng}&days=3`);
+        const data = await response.json();
         
-        // For more realistic demo, use the coordinates to adjust risks
-        // Coastal areas might have higher tsunami risk, etc.
+        if (response.ok) {
+            const avgPrecip = data.forecast.forecastday.reduce((sum, day) => sum + day.day.totalprecip_mm, 0) / 3;
+            const avgWind = data.forecast.forecastday.reduce((sum, day) => sum + day.day.maxwind_kph, 0) / 3;
+            const avgHumidity = data.forecast.forecastday.reduce((sum, day) => sum + day.day.avghumidity, 0) / 3;
+            
+            return { precipitation: avgPrecip, wind: avgWind, humidity: avgHumidity };
+        }
+    } catch (error) {
+        console.error('Error getting weather risk factors:', error);
+    }
+    
+    return { precipitation: 5, wind: 15, humidity: 60 }; // Default values
+}
+
+function getGeographicRiskFactors(lat, lng) {
+    // Simulate geographic risk based on coordinates
+    const isCoastal = Math.abs(lat) < 60 && (Math.abs(lng) % 10 < 3); // Simplified coastal detection
+    const isMountainous = Math.abs(lat) > 20 && Math.abs(lat) < 60;
+    const isFloodProne = Math.abs(lat) < 40;
+    
+    return { coastal: isCoastal, mountainous: isMountainous, floodProne: isFloodProne };
+}
+
+// Risk calculation functions
+function calculateFloodRisk(elevation, weather, geographic) {
+    let risk = 0;
+    
+    // Lower elevation increases flood risk
+    if (elevation < 50) risk += 40;
+    else if (elevation < 200) risk += 20;
+    else if (elevation < 500) risk += 10;
+    
+    // High precipitation increases risk
+    if (weather.precipitation > 50) risk += 30;
+    else if (weather.precipitation > 20) risk += 20;
+    else if (weather.precipitation > 10) risk += 10;
+    
+    // Geographic factors
+    if (geographic.floodProne) risk += 15;
+    if (geographic.coastal) risk += 10;
+    
+    return Math.min(risk, 100);
+}
+
+function calculateRainRisk(weather) {
+    let risk = 0;
+    
+    if (weather.precipitation > 100) risk = 95;
+    else if (weather.precipitation > 50) risk = 75;
+    else if (weather.precipitation > 25) risk = 50;
+    else if (weather.precipitation > 10) risk = 25;
+    else risk = 10;
+    
+    // Adjust for humidity
+    if (weather.humidity > 80) risk += 10;
+    
+    return Math.min(risk, 100);
+}
+
+function calculateLandslideRisk(elevation, weather, geographic) {
+    let risk = 0;
+    
+    // Mountainous areas have higher landslide risk
+    if (geographic.mountainous) risk += 30;
+    if (elevation > 1000) risk += 25;
+    else if (elevation > 500) risk += 15;
+    
+    // Heavy rain increases landslide risk
+    if (weather.precipitation > 30) risk += 35;
+    else if (weather.precipitation > 15) risk += 20;
+    else if (weather.precipitation > 5) risk += 10;
+    
+    return Math.min(risk, 100);
+}
+
+function calculateTsunamiRisk(lat, lng, elevation) {
+    let risk = 0;
+    
+    // Higher risk for coastal areas with low elevation
+    const isCoastal = Math.abs(lat) < 60 && (Math.abs(lng) % 10 < 3);
+    
+    if (isCoastal && elevation < 10) risk = 70;
+    else if (isCoastal && elevation < 50) risk = 40;
+    else if (isCoastal && elevation < 100) risk = 20;
+    else if (isCoastal) risk = 10;
+    else risk = 2; // Inland areas have very low tsunami risk
+    
+    return Math.min(risk, 100);
+}
+
+// Display disaster risks
+function displayDisasterRisks(risks) {
+    const riskItems = ['flood', 'rain', 'landslide', 'tsunami'];
+    const riskLabels = ['Flood Risk', 'Heavy Rain Risk', 'Landslide Risk', 'Tsunami Risk'];
+    
+    riskItems.forEach((riskType, index) => {
+        const riskValue = risks[riskType];
+        const riskLevel = getRiskLevel(riskValue);
+        const riskElement = document.getElementById(`${riskType}-risk`);
         
-        const isCoastal = isCoastalLocation(lat, lng);
-        const elevation = parseFloat(document.getElementById('elevation').textContent.split(' ')[1]) || 0;
-        
-        // Get weather data from displayed weather (if available)
-        let rainAmount = 0;
-        const weatherData = document.getElementById('weather-data');
-        if (!weatherData.classList.contains('hidden')) {
-            const weatherDays = document.querySelectorAll('.weather-day');
-            if (weatherDays.length > 0) {
-                const rainText = weatherDays[0].querySelector('p:nth-child(8)').textContent;
-                rainAmount = parseFloat(rainText.split(' ')[1]) || 0;
+        if (riskElement) {
+            // Update risk text and level
+            const riskText = riskElement.querySelector('div:nth-child(2)');
+            if (riskText) {
+                riskText.innerHTML = `<span class="${riskLevel.class}">${riskLevel.text} (${riskValue}%)</span>`;
             }
+            
+            // Update progress bar
+            const progressFill = riskElement.querySelector('.risk-progress-fill');
+            if (progressFill) {
+                progressFill.className = `risk-progress-fill progress-${riskLevel.class}`;
+                setTimeout(() => {
+                    progressFill.style.width = `${riskValue}%`;
+                }, 500 + index * 200);
+            }
+            
+            // Add risk level class to item
+            riskElement.className = `risk-item tooltip risk-${riskLevel.class}`;
         }
-        
-        // Calculate risks based on data
-        let floodRisk = Math.min(5, Math.max(1, Math.round((rainAmount / 10) * 5)));
-        if (elevation < 10) floodRisk += 1;
-        if (floodRisk > 5) floodRisk = 5;
-        
-        let rainRisk = Math.min(5, Math.max(1, Math.round((rainAmount / 15) * 5)));
-        
-        let landslideRisk = 1;
-        if (elevation > 100) {
-            landslideRisk = Math.min(5, Math.max(1, Math.round((rainAmount / 8) * 3)));
-        }
-        
-        let tsunamiRisk = 1;
-        if (isCoastal && elevation < 20) {
-            tsunamiRisk = Math.min(5, Math.max(1, 2 + Math.random() * 2));
-        }
-        
-        // Update risk text with classes for color coding
-        document.getElementById('flood-risk').innerHTML = `Flood Risk: <span class="${getRiskClass(floodRisk)}">${getRiskText(floodRisk)}</span>`;
-        document.getElementById('rain-risk').innerHTML = `Heavy Rain Risk: <span class="${getRiskClass(rainRisk)}">${getRiskText(rainRisk)}</span>`;
-        document.getElementById('landslide-risk').innerHTML = `Landslide Risk: <span class="${getRiskClass(landslideRisk)}">${getRiskText(landslideRisk)}</span>`;
-        document.getElementById('tsunami-risk').innerHTML = `Tsunami Risk: <span class="${getRiskClass(tsunamiRisk)}">${getRiskText(tsunamiRisk)}</span>`;
-        
-        // Apply risk-level classes to parent elements
-        document.getElementById('flood-risk').className = `tooltip risk-${getRiskClass(floodRisk)}`;
-        document.getElementById('rain-risk').className = `tooltip risk-${getRiskClass(rainRisk)}`;
-        document.getElementById('landslide-risk').className = `tooltip risk-${getRiskClass(landslideRisk)}`;
-        document.getElementById('tsunami-risk').className = `tooltip risk-${getRiskClass(tsunamiRisk)}`;
-        
-        // Create the risk chart
-        createRiskChart([floodRisk, rainRisk, landslideRisk, tsunamiRisk]);
-        
-        // Hide loading, show data
-        document.getElementById('disaster-loading').classList.add('hidden');
-        document.getElementById('disaster-data').classList.remove('hidden');
-    }, 1500);
+    });
+    
+    // Create risk chart
+    createRiskChart(risks);
+    
+    // Hide loading, show data
+    document.getElementById('disaster-loading').classList.add('hidden');
+    document.getElementById('disaster-data').classList.remove('hidden');
 }
 
-// Helper function to determine if location is coastal (simplified)
-function isCoastalLocation(lat, lng) {
-    // This is a very simplified check
-    // In a real app, you'd use coastline data or proximity to oceans
-    // For demo, we'll just check if the location is near certain known oceans
-    
-    // Check if near Pacific
-    if ((lng > 120 || lng < -120) && (lat < 60 && lat > -60)) return true;
-    
-    // Check if near Atlantic
-    if ((lng > -80 && lng < 0) && (lat < 60 && lat > -40)) return true;
-    
-    // Check if near Indian Ocean
-    if ((lng > 40 && lng < 120) && (lat < 20 && lat > -40)) return true;
-    
-    return false;
+// Get risk level classification
+function getRiskLevel(value) {
+    if (value >= 80) return { class: 'very-high', text: 'Very High' };
+    if (value >= 60) return { class: 'high', text: 'High' };
+    if (value >= 40) return { class: 'moderate', text: 'Moderate' };
+    if (value >= 20) return { class: 'low', text: 'Low' };
+    return { class: 'very-low', text: 'Very Low' };
 }
 
-// Helper function to convert risk level to text
-function getRiskText(riskLevel) {
-    switch(riskLevel) {
-        case 1: return "Very Low";
-        case 2: return "Low";
-        case 3: return "Moderate";
-        case 4: return "High";
-        case 5: return "Very High";
-        default: return "Unknown";
-    }
-}
-
-// Helper function to get CSS class for risk level
-function getRiskClass(riskLevel) {
-    switch(riskLevel) {
-        case 1: return "very-low";
-        case 2: return "low";
-        case 3: return "moderate";
-        case 4: return "high";
-        case 5: return "very-high";
-        default: return "";
-    }
-}
-
-// Create risk chart
-function createRiskChart(riskLevels) {
-    const ctx = document.getElementById('risk-chart').getContext('2d');
+// Create risk assessment chart
+function createRiskChart(risks) {
+    const ctx = document.getElementById('risk-chart');
+    if (!ctx) return;
     
-    // Determine if we need to adjust the y-axis
-    // If all risks are at minimum (1), set min to 0 for better visualization
-    const minY = riskLevels.every(level => level === 1) ? 0 : 1;
+    const chartData = {
+        labels: ['Flood', 'Heavy Rain', 'Landslide', 'Tsunami'],
+        datasets: [{
+            label: 'Risk Level (%)',
+            data: [risks.flood, risks.rain, risks.landslide, risks.tsunami],
+            backgroundColor: [
+                'rgba(59, 130, 246, 0.8)',
+                'rgba(16, 185, 129, 0.8)',
+                'rgba(245, 158, 11, 0.8)',
+                'rgba(239, 68, 68, 0.8)'
+            ],
+            borderColor: [
+                'rgba(59, 130, 246, 1)',
+                'rgba(16, 185, 129, 1)',
+                'rgba(245, 158, 11, 1)',
+                'rgba(239, 68, 68, 1)'
+            ],
+            borderWidth: 2,
+            borderRadius: 8,
+            borderSkipped: false
+        }]
+    };
     
-    // Colors for risk levels
-    const backgroundColors = [
-        'rgba(54, 162, 235, 0.7)',
-        'rgba(75, 192, 192, 0.7)',
-        'rgba(153, 102, 255, 0.7)',
-        'rgba(255, 99, 132, 0.7)'
-    ];
-    
-    const borderColors = [
-        'rgba(54, 162, 235, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 99, 132, 1)'
-    ];
-    
-    // Create chart
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Flood', 'Heavy Rain', 'Landslide', 'Tsunami'],
-            datasets: [{
-                label: 'Risk Level (1-5)',
-                data: riskLevels,
-                backgroundColor: backgroundColors,
-                borderColor: borderColors,
-                borderWidth: 1
-            }]
+    const chartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false
+            },
+            tooltip: {
+                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                titleColor: 'white',
+                bodyColor: 'white',
+                borderColor: 'rgba(255, 255, 255, 0.2)',
+                borderWidth: 1,
+                cornerRadius: 8
+            }
         },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: minY === 0,
-                    min: minY,
-                    max: 5,
-                    ticks: {
-                        stepSize: 1,
-                        callback: function(value) {
-                            if (value === 1) return "Very Low";
-                            if (value === 2) return "Low";
-                            if (value === 3) return "Moderate";
-                            if (value === 4) return "High";
-                            if (value === 5) return "Very High";
-                            return value;
-                        }
-                    },
-                    grid: {
-                        color: 'rgba(200, 200, 200, 0.2)'
-                    }
+        scales: {
+            y: {
+                beginAtZero: true,
+                max: 100,
+                grid: {
+                    color: 'rgba(255, 255, 255, 0.1)'
                 },
-                x: {
-                    grid: {
-                        display: false
+                ticks: {
+                    color: 'rgba(255, 255, 255, 0.8)',
+                    callback: function(value) {
+                        return value + '%';
                     }
                 }
             },
-            plugins: {
-                legend: {
+            x: {
+                grid: {
                     display: false
                 },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            const value = context.raw;
-                            let riskText = "";
-                            switch(value) {
-                                case 1: riskText = "Very Low"; break;
-                                case 2: riskText = "Low"; break;
-                                case 3: riskText = "Moderate"; break;
-                                case 4: riskText = "High"; break;
-                                case 5: riskText = "Very High"; break;
-                            }
-                            return `Risk: ${riskText} (${value}/5)`;
-                        }
-                    }
+                ticks: {
+                    color: 'rgba(255, 255, 255, 0.8)'
                 }
             }
+        },
+        animation: {
+            duration: 2000,
+            easing: 'easeOutQuart'
         }
+    };
+    
+    new Chart(ctx, {
+        type: 'bar',
+        data: chartData,
+        options: chartOptions
     });
 }
