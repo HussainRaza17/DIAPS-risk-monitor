@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location Details - DIAPS</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>DIAPS</h1>
+        <p>Disaster Information Aggregation and Prediction Software</p>
+    </header>
+    
+    <main>
+        <div class="container details-container">
+            <div class="location-info">
+                <h2 id="location-title">Loading location data...</h2>
+                <p id="coordinates">Coordinates: ...</p>
+                <p id="elevation">Elevation: Loading...</p>
+                <a href="index.html" class="back-btn">Back to Map</a>
+            </div>
+            
+            <div class="data-sections">
+                <section class="weather-section">
+                    <h3>Weather Forecast</h3>
+                    <div id="weather-loading" class="loading">Loading weather data...</div>
+                    <div id="weather-data" class="hidden">
+                        <div class="weather-days" id="weather-days"></div>
+                    </div>
+                </section>
+                
+                <section class="disaster-section">
+                    <h3>Disaster Risk Prediction</h3>
+                    <div id="disaster-loading" class="loading">Calculating risk levels...</div>
+                    <div id="disaster-data" class="hidden">
+                        <div class="disaster-risks">
+                            <p id="flood-risk" class="tooltip" data-tooltip="Based on precipitation forecast and terrain">Flood Risk: Calculating...</p>
+                            <p id="rain-risk" class="tooltip" data-tooltip="Based on precipitation forecast">Heavy Rain Risk: Calculating...</p>
+                            <p id="landslide-risk" class="tooltip" data-tooltip="Based on elevation, precipitation, and terrain">Landslide Risk: Calculating...</p>
+                            <p id="tsunami-risk" class="tooltip" data-tooltip="Based on proximity to coastline and elevation">Tsunami Risk: Calculating...</p>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="risk-chart"></canvas>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="earthquake-section">
+                    <h3>Recent Earthquakes</h3>
+                    <div id="earthquake-loading" class="loading">Fetching earthquake data...</div>
+                    <div id="earthquake-data" class="hidden">
+                        <div id="earthquake-list"></div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 DIAPS - Disaster Information Aggregation and Prediction Software</p>
+    </footer>
+
+    <script src="details.js"></script>
+</body>
+</html>

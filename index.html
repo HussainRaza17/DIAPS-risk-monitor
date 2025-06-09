@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIAPS - Disaster Information Aggregation and Prediction Software</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+</head>
+<body>
+    <!-- Animated background -->
+    <div class="particles" id="particles"></div>
+
+    <header>
+        <div class="header-content">
+            <div class="logo-section">
+                <h1>DIAPS</h1>
+                <p>Disaster Information Aggregation and Prediction Software</p>
+            </div>
+            <div class="header-stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="active-users">12,847</div>
+                    <div class="stat-label">Active Users</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="locations-monitored">2.3M</div>
+                    <div class="stat-label">Locations Monitored</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="alerts-sent">156K</div>
+                    <div class="stat-label">Alerts Sent Today</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="hero-title">Stay Ahead of Natural Disasters</h1>
+            <p class="hero-subtitle">Real-time monitoring, intelligent predictions, and comprehensive risk assessment for floods, earthquakes, landslides, and tsunamis worldwide.</p>
+        </div>
+    </section>
+    
+    <main>
+        <div class="container">
+            <div class="content-grid">
+                <div class="map-section glass-card">
+                    <div class="section-header">
+                        <h2 class="section-title">Interactive Risk Map</h2>
+                        <div class="location-controls">
+                            <button class="btn btn-secondary" id="locate-btn">
+                                📍 My Location
+                            </button>
+                            <button class="btn btn-secondary" id="fullscreen-btn">
+                                ⛶ Fullscreen
+                            </button>
+                        </div>
+                    </div>
+                    <p class="instruction-text">
+                        🎯 Click anywhere on the map to view detailed disaster and weather information for that location.
+                    </p>
+                    <div style="position: relative;">
+                        <div id="map"></div>
+                        <div class="map-overlay">
+                            <button class="overlay-btn" id="zoom-in" title="Zoom In">+</button>
+                            <button class="overlay-btn" id="zoom-out" title="Zoom Out">−</button>
+                            <button class="overlay-btn" id="reset-view" title="Reset View">🌍</button>
+                        </div>
+                    </div>
+                    <div class="map-legend">
+                        <div class="legend-item">
+                            <div class="legend-marker user-marker"></div>
+                            <span>Your Location</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-marker earthquake-marker"></div>
+                            <span>Recent Earthquake (M4.5+)</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-section glass-card">
+                    <h2 class="section-title">Comprehensive Monitoring</h2>
+                    <p style="color: rgba(255,255,255,0.9); margin-bottom: 30px;">
+                        DIAPS combines multiple data sources to provide accurate risk assessments and early warning systems for natural disasters.
+                    </p>
+                    <div class="features">
+                        <div class="feature-item">
+                            <div class="feature-header">
+                                <div class="feature-icon weather-icon">🌦️</div>
+                                <h3>Weather Intelligence</h3>
+                            </div>
+                            <p>Advanced 7-day weather forecasts with precipitation, temperature, wind patterns, and severe weather alerts from multiple meteorological sources.</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-header">
+                                <div class="feature-icon earthquake-icon">🌍</div>
+                                <h3>Seismic Monitoring</h3>
+                            </div>
+                            <p>Real-time earthquake detection and historical seismic activity analysis with magnitude tracking and aftershock predictions.</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-header">
+                                <div class="feature-icon risk-icon">⚠️</div>
+                                <h3>AI Risk Assessment</h3>
+                            </div>
+                            <p>Machine learning algorithms analyze terrain, weather patterns, and historical data to predict flood, landslide, and tsunami risks.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Status indicator panel -->
+    <div class="status-indicator" id="status-panel">
+        <div class="status-header">
+            <div class="status-title">System Status</div>
+            <button class="close-btn" id="close-status">×</button>
+        </div>
+        <div id="status-content">
+            <p>🟢 All systems operational</p>
+            <p>📡 Data sources: Active</p>
+            <p>🔄 Last update: <span id="last-update">Just now</span></p>
+        </div>
+    </div>
+
+    <!-- Enhanced Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <h3>DIAPS</h3>
+                    <p>Disaster Information Aggregation and Prediction Software</p>
+                </div>
+                <div class="footer-description">
+                    <p>Protecting communities worldwide through advanced disaster monitoring, prediction, and early warning systems. Stay prepared, stay safe.</p>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#monitoring">Live Monitoring</a></li>
+                    <li><a href="#alerts">Alert System</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="details.html">Detailed Analysis</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Resources</h4>
+                <ul class="footer-links">
+                    <li><a href="#api">API Documentation</a></li>
+                    <li><a href="#support">Support Center</a></li>
+                    <li><a href="#privacy">Privacy Policy</a></li>
+                    <li><a href="#terms">Terms of Service</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Emergency Contacts</h4>
+                <div class="emergency-contacts">
+                    <div class="emergency-item">
+                        <strong>🚨 Emergency:</strong> 112
+                    </div>
+                    <div class="emergency-item">
+                        <strong>🌍 Tourist Helpline:</strong> 1363 (IND)
+                    </div>
+                    <div class="emergency-item">
+                        <strong>📧 DIAPS Alert:</strong> alert@diaps.org
+                    </div>
+                </div>
+                <div class="social-links">
+                    <a href="#twitter" class="social-link" title="Follow us on Twitter">🐦</a>
+                    <a href="#facebook" class="social-link" title="Like us on Facebook">📘</a>
+                    <a href="#linkedin" class="social-link" title="Connect on LinkedIn">💼</a>
+                    <a href="#github" class="social-link" title="View our GitHub">💻</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-bottom-content">
+                <p>&copy; 2025 DIAPS - Disaster Information Aggregation and Prediction Software. All rights reserved.</p>
+                <div class="footer-credits">
+                    <span>Powered by MHR Naqvi</span>
+                    <span>•</span>
+                    <span>Data from USGS, NOAA, and Global Partners</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="back-to-top" style="display: none;">
+        ↑
+    </button>
+
+    <!-- Cookie Notice -->
+    <div class="cookie-notice" id="cookie-notice" style="display: none;">
+        <div class="cookie-content">
+            <p>🍪 We use cookies to enhance your experience and provide personalized disaster alerts. By continuing to use DIAPS, you agree to our use of cookies.</p>
+            <div class="cookie-actions">
+                <button class="btn btn-primary" id="accept-cookies">Accept</button>
+                <button class="btn btn-secondary" id="learn-cookies">Learn More</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
