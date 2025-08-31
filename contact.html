@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - DIAPS | Disaster Information Aggregation and Prediction Software</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="/assets/css/contact.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href='https://cdn.boxicons.com/fonts/brands/boxicons-brands.min.css' rel='stylesheet'>
+</head>
+<body>
+    <!-- Animated background -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Info message for notifications -->
+    <div class="info-message" id="infoMessage"></div>
+
+    <header>
+        <div class="header-content">
+            <div class="logo-section">
+                <h1>DIAPS</h1>
+                <p>Disaster Information Aggregation and Prediction Software</p>
+            </div>
+            <nav class="nav-links">
+                <button class="back-btn">
+                    <a href="index.html">
+                        <i class="fas fa-home"></i>
+                        Home
+                    </a>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="hero-title">Get In Touch</h1>
+            <p class="hero-subtitle">
+                Need assistance with disaster monitoring? Have questions about our services? 
+                Our expert team is here to help you stay prepared and informed.
+            </p>
+        </div>
+    </section>
+    
+    <main>
+        <div class="container">
+            <div class="contact-grid">
+                <!-- Contact Form -->
+                <div class="glass-card">
+                    <h2 class="section-title">
+                        <i class="fas fa-paper-plane"></i>
+                        Send us a Message
+                    </h2>
+                    
+                    <form class="contact-form" id="contactForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name *</label>
+                                <input type="text" id="firstName" name="firstName" placeholder="John" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name *</label>
+                                <input type="text" id="lastName" name="lastName" placeholder="Doe" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" name="email" placeholder="john@example.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" placeholder="+1 (555) 123-4567">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="organization">Organization</label>
+                                <input type="text" id="organization" name="organization" placeholder="Emergency Services, NGO, etc.">
+                            </div>
+                            <div class="form-group">
+                                <label for="category">Inquiry Type *</label>
+                                <select id="category" name="category" required>
+                                    <option value="">Select a category</option>
+                                    <option value="general">General Information</option>
+                                    <option value="technical">Technical Support</option>
+                                    <option value="emergency">Emergency Alert</option>
+                                    <option value="api">API Access</option>
+                                    <option value="partnership">Partnership</option>
+                                    <option value="media">Media Inquiry</option>
+                                    <option value="bug">Bug Report</option>
+                                    <option value="feedback">Feedback</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Priority Level *</label>
+                            <div class="priority-selector">
+                                <div class="priority-option priority-low">
+                                    <input type="radio" id="priority-low" name="priority" value="low" required>
+                                    <label for="priority-low">
+                                        <div>🟢 Low</div>
+                                        <small>General inquiry</small>
+                                    </label>
+                                </div>
+                                <div class="priority-option priority-medium">
+                                    <input type="radio" id="priority-medium" name="priority" value="medium">
+                                    <label for="priority-medium">
+                                        <div>🟡 Medium</div>
+                                        <small>Important issue</small>
+                                    </label>
+                                </div>
+                                <div class="priority-option priority-high">
+                                    <input type="radio" id="priority-high" name="priority" value="high">
+                                    <label for="priority-high">
+                                        <div>🟠 High</div>
+                                        <small>Urgent matter</small>
+                                    </label>
+                                </div>
+                                <div class="priority-option priority-urgent">
+                                    <input type="radio" id="priority-urgent" name="priority" value="urgent">
+                                    <label for="priority-urgent">
+                                        <div>🔴 Urgent</div>
+                                        <small>Emergency</small>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subject">Subject *</label>
+                            <input type="text" id="subject" name="subject" placeholder="Brief summary of your inquiry" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Message *</label>
+                            <textarea id="message" name="message" placeholder="Please provide detailed information about your inquiry..." required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                            <i class="fas fa-paper-plane"></i>
+                            Send Message
+                        </button>
+                    </form>
+                    
+                    <div class="success-message" id="successMessage">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>Message Sent Successfully!</h3>
+                        <p>Thank you for contacting DIAPS. We'll get back to you within 24 hours.</p>
+                    </div>
+                </div>
+                
+                <!-- Contact Information -->
+                <div class="glass-card contact-info">
+                    <h2 class="section-title">
+                        <i class="fas fa-address-book"></i>
+                        Contact Information
+                    </h2>
+                    
+                    <div class="contact-methods">
+                        <div class="contact-method">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h4>Email Support</h4>
+                                <p><a href="mailto:support@diaps.org">support@diaps.org</a></p>
+                                <p>General inquiries and support</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-method">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h4>Phone Support</h4>
+                                <p><a href="tel:+1-800-DIAPS-01">+1 (800) DIAPS-01</a></p>
+                                <p>24/7 Emergency Hotline</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-method">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h4>Headquarters</h4>
+                                <p>DIAPS Global Center</p>
+                                <p>1247 Disaster Monitoring Blvd<br>Suite 500, Emergency City, EC 12345</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-method">
+                            <div class="contact-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h4>Emergency Alerts</h4>
+                                <p><a href="mailto:alert@diaps.org">alert@diaps.org</a></p>
+                                <p>Critical disaster notifications</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Emergency Contacts -->
+                    <div class="emergency-section">
+                        <h3>
+                            <i class="fas fa-siren-on"></i>
+                            Emergency Contacts
+                        </h3>
+                        <div class="emergency-contacts">
+                            <div class="emergency-item">
+                                <strong>🚨 Global Emergency</strong>
+                                <span>112 / 911</span>
+                            </div>
+                            <div class="emergency-item">
+                                <strong>🌍 DIAPS Emergency</strong>
+                                <span>+1-800-SOS-DIAPS</span>
+                            </div>
+                            <div class="emergency-item">
+                                <strong>📱 SMS Alerts</strong>
+                                <span>Text "HELP" to 73829</span>
+                            </div>
+                            <div class="emergency-item">
+                                <strong>🌐 Tourist Helpline (IND)</strong>
+                                <span>1363</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Office Hours -->
+                    <div class="office-hours">
+                        <h4>
+                            <i class="fas fa-clock"></i>
+                            Office Hours
+                        </h4>
+                        <div class="hours-grid">
+                            <div class="hours-item today">
+                                <span>Monday - Friday</span>
+                                <span>8:00 AM - 6:00 PM UTC</span>
+                            </div>
+                            <div class="hours-item">
+                                <span>Saturday</span>
+                                <span>10:00 AM - 4:00 PM UTC</span>
+                            </div>
+                            <div class="hours-item">
+                                <span>Sunday</span>
+                                <span>Emergency Only</span>
+                            </div>
+                            <div class="hours-item">
+                                <span>Emergency Line</span>
+                                <span>24/7 Available</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Social Links -->
+                    <div class="social-section">
+                        <h4>
+                            <i class="fas fa-share-alt"></i>
+                            Follow Us
+                        </h4>
+                        <div class="social-links">
+                            <a href="#" class="social-link" title="Twitter">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="social-link" title="Facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="social-link" title="LinkedIn">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <a href="#" class="social-link" title="YouTube">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                            <a href="#" class="social-link" title="GitHub">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="#" class="social-link" title="Telegram">
+                                <i class="fab fa-telegram-plane"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/assets/js/contact.js"></script>
+</body>
+</html>
